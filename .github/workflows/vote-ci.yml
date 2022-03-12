@@ -20,7 +20,7 @@ jobs:
       with:
         username: ${{ secrets.AWS_ACCESS_KEY_ID }}
         password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        registry: public.ecr.aws/y8r3s1k5
+        registry: public.ecr.aws
       env:
         AWS_REGION: eu-east-1
 
