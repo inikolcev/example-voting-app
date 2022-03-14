@@ -48,7 +48,7 @@ jobs:
         git config --global user.name "inikolcev"
         git clone https://${{secrets.ACCESS_TOKEN}}@github.com/inikolcev/playground-infra
         cd playground-infra/apps/votingapp/k8s-manifests
-        git remote add origin "https://${{secrets.ACCESS_TOKEN}}@github.com/inikolcev/playground-infra.git"
+        git remote set-url origin "https://${{secrets.ACCESS_TOKEN}}@github.com/inikolcev/playground-infra.git"
         sed -i "s|image:.*|image:849296354115.dkr.ecr.eu-central-1.amazonaws.com/votingapp-result:${{ github.sha }}|" vote-deployment.yaml
         git add .
         git commit -m "Update vote-deployment with new image tag ${{ github.sha }}"
