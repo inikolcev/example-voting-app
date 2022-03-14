@@ -38,3 +38,18 @@ jobs:
         echo "Pushing image to ECR..."
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:${{ github.sha }}
+
+    - name: Update image in the deployment manifest
+      id: update-manifest
+      uses: actions/checkout@v2
+      env:
+        ACCESS_TOKEN: '${{ secrets.API_TOKEN_GITHUB }}'
+      run: |
+        git config --global user.email "ivan@nikolcev.com"
+        git config --global user.name "inikolcev"
+        git clone https://${{secrets.ACCESS_TOKEN}}@github.com/inikolcev/playground-infra
+        cd playground-infra/apps/votingapp/k8s-manifests
+        sed -i "s|image:.*|image:849296354115.dkr.ecr.eu-central-1.amazonaws.com/votingapp-result:${{ github.sha }}|" vote-deployment.yaml
+        git add .
+        git commit -m "Update vote-deployment with new image tag ${{ github.sha }}"
+        git push
